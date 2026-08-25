@@ -35,7 +35,6 @@ public final class Constants {
     // likelihood of tripping breakers or damaging CIM motors
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
   }
-
   public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int FEEDER_MOTOR_ID = 6;
