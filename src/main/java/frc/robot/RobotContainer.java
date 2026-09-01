@@ -42,7 +42,6 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(
       DRIVER_CONTROLLER_PORT);
 
-
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -50,6 +49,7 @@ public class RobotContainer {
 
             // NOTE deadband changed to 0.01 from 0.1
             .withDeadband(DriveTrainConstants.ROBOT_MAX_SPEED * 0.01).withRotationalDeadband(DriveTrainConstants.MAX_ANGULAR_RATE * 0.01) // Add a 10% deadband
+            // ROBOT_MAX_SPEED is undetermined, add it in constants under drive.
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
@@ -205,7 +205,7 @@ public class RobotContainer {
 
     public double calculateVelocity(double joystick) {
         double leftJoystick = MathUtil.applyDeadband(joystick, 0.1);
-        double velocity = -DriveTrainConstants.ROBOT_MAX_SPEED * scale(leftJoystick, 2.5);
+        double velocity = -Constants.DriveConstants.ROBOT_MAX_SPEED * scale(leftJoystick, 2.5);
         return velocity;
     }
 
@@ -213,13 +213,15 @@ public class RobotContainer {
         double omega = 0;
         if (driverController.rightTrigger().getAsBoolean()) {
             if (!superstructure.pointedAtTarget()) {
+                // 
                 omega = superstructure.turnToTargetSpeed();
             } 
          } else if (driverController.x().getAsBoolean()) {
                 omega = superstructure.turnToTargetSpeedSOTM();
         } else {
             double rightX = MathUtil.applyDeadband(driverController.getRightX(), 0.05);
-            omega = -DriveTrainConstants.MAX_ANGULAR_RATE * scale(rightX, 2.5);
+            omega = -Constants.DriveConstants.MAX_ANGULAR_RATE * scale(rightX, 2.5);
+        // Define the max angular rate once we finish swerve
         }
         return omega;
     }
