@@ -63,18 +63,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // While the left bumper on operator controller is held, intake Fuel
-    driverController.leftBumper()
+    // While the left trigger on driver controller is held, intake Fuel
+    driverController.leftTrigger()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.intake(), () -> ballSubsystem.stop()));
-    // While the right bumper on the operator controller is held, spin up for 1
+    // While the right trigger on the driver controller is held, spin up for 1
     // second, then launch fuel. When the button is released, stop.
-    driverController.rightBumper()
+    driverController.rightTrigger()
         .whileTrue(ballSubsystem.spinUpCommand().withTimeout(SPIN_UP_SECONDS)
             .andThen(ballSubsystem.launchCommand())
             .finallyDo(() -> ballSubsystem.stop()));
-    // While the A button is held on the operator controller, eject fuel back out
+    // While the left bumper is held on the driver controller, eject fuel back out
     // the intake
-    driverController.a()
+    driverController.leftBumper()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
 
     // Set the default command for the drive subsystem to the command provided by
@@ -89,6 +89,9 @@ public class RobotContainer {
             () -> -driverController.getLeftY() * DRIVE_SCALING,
             () -> -driverController.getRightX() * ROTATION_SCALING));
   }
+
+  // Change this ^^^^^^^^^^^^^^^^^^^ 
+  // We are not using differental drive, we should try to make sure its as compatable with this code 
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
