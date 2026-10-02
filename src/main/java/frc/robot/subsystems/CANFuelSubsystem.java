@@ -4,11 +4,17 @@
 
 package frc.robot.subsystems;
 
+// Remove Spark type imports. We are using Krackens
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
+
+// Kraken Imports (Under development)
+// import com.ctre.pheonix6.hardware;
+// import com.ctre.pheonix6.mechanisms;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,14 +22,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.FuelConstants.*;
 
 public class CANFuelSubsystem extends SubsystemBase {
-  private final SparkMax feederRoller;
-  private final SparkMax intakeLauncherRoller;
+  private final TalonFX feederRoller;
+  private final TalonFX intakeLauncherRoller;
 
   /** Creates a new CANBallSubsystem. */
   public CANFuelSubsystem() {
     // create brushed motors for each of the motors on the launcher mechanism
     intakeLauncherRoller = new SparkMax(INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushed);
     feederRoller = new SparkMax(FEEDER_MOTOR_ID, MotorType.kBrushed);
+    TalonFX
 
     // put default values for various fuel operations onto the dashboard
     // all methods in this subsystem pull their values from the dashbaord to allow

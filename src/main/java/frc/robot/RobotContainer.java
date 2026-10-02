@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.FuelConstants.*;
-import frc.robot.commands.Autos;
-import frc.robot.subsystems.CANDriveSubsystem;
+// import frc.robot.commands.Autos;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 /**
@@ -24,7 +23,6 @@ import frc.robot.subsystems.CANFuelSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
 
   // The driver's controller
@@ -47,7 +45,7 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", Autos.exampleAuto(driveSubsystem, ballSubsystem));
+    // autoChooser.setDefaultOption("Autonomous", Autos.exampleAuto(driveSubsystem, ballSubsystem));
   }
 
   /**
@@ -84,10 +82,7 @@ public class RobotContainer {
     // value). The X-axis is also inverted so a positive value (stick to the right)
     // results in clockwise rotation (front of the robot turning right). Both axes
     // are also scaled down so the rotation is more easily controllable.
-    driveSubsystem.setDefaultCommand(
-        driveSubsystem.driveArcade(
-            () -> -driverController.getLeftY() * DRIVE_SCALING,
-            () -> -driverController.getRightX() * ROTATION_SCALING));
+
   }
 
   // Change this ^^^^^^^^^^^^^^^^^^^ 
