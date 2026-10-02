@@ -17,10 +17,18 @@ package frc.robot;
 public final class Constants {
   public static final class DriveConstants {
     // Motor controller IDs for drivetrain motors
-    public static final int LEFT_LEADER_ID = 1;
-    public static final int LEFT_FOLLOWER_ID = 2;
-    public static final int RIGHT_LEADER_ID = 3;
-    public static final int RIGHT_FOLLOWER_ID = 4;
+    public static final int FRONT_RIGHT_DRIVE = 1;
+    public static final int FRONT_LEFT_DRIVE = 2;
+    public static final int BACK_LEFT_DRIVE = 3;
+    public static final int BACK_RIGHT_DRIVE = 4;
+    public static final int FRONT_RIGHT_STEER = 5;
+    public static final int FRONT_LEFT_STEER = 6;
+    public static final int BACK_LEFT_STEER = 7;
+    public static final int BACK_RIGHT_STEER = 8;
+    public static final int FRONT_RIGHT_DRIVE_ENCODER = 9;
+    public static final int FRONT_LEFT_DRIVE_ENCODER = 10;
+    public static final int BACK_LEFT_DRIVE_ENCODER = 11;
+    public static final int BACK_RIGHT_DRIVE_ENCODER = 12;
 
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
@@ -29,8 +37,8 @@ public final class Constants {
 
   public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
-    public static final int FEEDER_MOTOR_ID = 6;
-    public static final int INTAKE_LAUNCHER_MOTOR_ID = 5;
+    public static final int FEEDER_MOTOR_ID = 15;
+    public static final int INTAKE_LAUNCHER_MOTOR_ID = 14;
 
     // Current limit and nominal voltage for fuel mechanism motors.
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 60;
