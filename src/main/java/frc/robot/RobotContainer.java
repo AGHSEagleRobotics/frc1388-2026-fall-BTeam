@@ -6,13 +6,17 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Shoontake;
+import frc.robot.commands.ShoontakeCommand;
+import frc.robot.commands.ShoontakeCommand.Mode;
 
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.FuelConstants.*;
 // import frc.robot.commands.Autos;
-import frc.robot.subsystems.CANFuelSubsystem;
+// import frc.robot.subsystems.CANFuelSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -23,16 +27,11 @@ import frc.robot.subsystems.CANFuelSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
-
-  // The driver's controller
-  private final CommandXboxController driverController = new CommandXboxController(
-      DRIVER_CONTROLLER_PORT);
-
-  // The operator's controller
-  private final CommandXboxController operatorController = new CommandXboxController(
-      OPERATOR_CONTROLLER_PORT);
-
+  // private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
+   private final Shoontake shoontake = new Shoontake();
+   private final CommandXboxController driverController = new CommandXboxController(0);
+      private Mode lastState = null;
+  
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -42,10 +41,6 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
 
-    // Set the options to show up in the Dashboard for selecting auto modes. If you
-    // add additional auto modes you can add additional lines here with
-    // autoChooser.addOption
-    // autoChooser.setDefaultOption("Autonomous", Autos.exampleAuto(driveSubsystem, ballSubsystem));
   }
 
   /**
@@ -60,28 +55,46 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+        driverController.rightBumper()
+            .onTrue(Commands.runOnce(() -> {
+                if (lastState == null || lastState == Mode.LONG) {
+                    lastState = Mode.SHORT;
+                    new ShoontakeCommand(shoontake, Mode.SHORT).schedule();
+                } else if (lastState == Mode.SHORT) {
+                    lastState = Mode.MEDIUM;
+                    new ShoontakeCommand(shoontake, Mode.MEDIUM).schedule();
+                } else if (lastState == Mode.MEDIUM) {
+                    lastState = Mode.LONG;
+                    new ShoontakeCommand(shoontake, Mode.LONG).schedule();
+                }
+            }));
 
-    // While the left trigger on driver controller is held, intake Fuel
-    driverController.leftTrigger()
-        .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.intake(), () -> ballSubsystem.stop()));
-    // While the right trigger on the driver controller is held, spin up for 1
-    // second, then launch fuel. When the button is released, stop.
-    driverController.rightTrigger()
-        .whileTrue(ballSubsystem.spinUpCommand().withTimeout(SPIN_UP_SECONDS)
-            .andThen(ballSubsystem.launchCommand())
-            .finallyDo(() -> ballSubsystem.stop()));
-    // While the left bumper is held on the driver controller, eject fuel back out
-    // the intake
-    driverController.leftBumper()
-        .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
+        // --- Right trigger: fire current state without changing it ---
 
-    // Set the default command for the drive subsystem to the command provided by
-    // factory with the values provided by the joystick axes on the driver
-    // controller. The Y axis of the controller is inverted so that pushing the
-    // stick away from you (a negative value) drives the robot forwards (a positive
-    // value). The X-axis is also inverted so a positive value (stick to the right)
-    // results in clockwise rotation (front of the robot turning right). Both axes
-    // are also scaled down so the rotation is more easily controllable.
+        driverController.rightTrigger()
+            .onTrue(Commands.runOnce(() -> {
+                if (lastState != null) {
+                    new ShoontakeCommand(shoontake, lastState).schedule();
+                }
+            }));
+
+        // --- Intake: left trigger ---
+
+        driverController.leftTrigger()
+            .onTrue(new ShoontakeCommand(shoontake, Mode.INTAKE));
+
+        // --- Vomit: left bumper ---
+
+        driverController.leftBumper()
+            .onTrue(new ShoontakeCommand(shoontake, Mode.VOMIT));
+
+        // --- Stop shooting: X button ---
+
+        driverController.x()
+            .onTrue(Commands.runOnce(() -> {
+                lastState = null;
+                new ShoontakeCommand(shoontake, Mode.STOP).schedule();
+            }));
 
   }
 

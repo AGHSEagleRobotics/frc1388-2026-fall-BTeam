@@ -5,59 +5,86 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+// import com.ctre.phoenix6.controls.Follower;
+// import com.ctre.phoenix6.controls.NeutralOut;
+// import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Temperature;
-import edu.wpi.first.units.measure.Voltage;
+// import edu.wpi.first.units.measure.Angle;
+// import edu.wpi.first.units.measure.AngularVelocity;
+// import edu.wpi.first.units.measure.Current;
+// import edu.wpi.first.units.measure.Temperature;
+// import edu.wpi.first.units.measure.Voltage;
 
 public class Shoontake extends SubsystemBase {
   /** Creates a new Shoontake. */
 
-  private final TalonFX m_shoontakeMotor1;
-  private final TalonFX m_indexerMotor1;
+    private static final int SHOONTAKE_MOTOR_ID = 10;
+    private static final int INDEXER_MOTOR_ID   = 11;
+    private static final int SHOONTAKE_CANCODER_ID = 12;
+    private final TalonFX shoontakeMotor;
+    private final TalonFX indexerMotor;
+    private final CANcoder shoontakeEncoder;
+    private double shoontakePower = -0.30; // The following are the default power values on the shoontake and indexer motors
+    private double indexerPower   = 0.40;  // :P
+  
+  public Shoontake() {
+        shoontakeMotor = new TalonFX(SHOONTAKE_MOTOR_ID);
+        indexerMotor   = new TalonFX(INDEXER_MOTOR_ID);
+        shoontakeEncoder = new CANcoder(SHOONTAKE_CANCODER_ID);
 
-  public Shoontake(TalonFX shoontakeMotor1, TalonFX indexerMotor1) {
-    // Shoontake.configFactoryDefault();
-
-   
-    m_shoontakeMotor1 = shoontakeMotor1;
-    m_indexerMotor1 = indexerMotor1;
+        shoontakeMotor.setControl(new DutyCycleOut(shoontakePower));
+        indexerMotor.setControl(new DutyCycleOut(indexerPower));
+    
+}
     // TalonFXConfigurator configurator = new TalonFXConfigurator(1);
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    shoontakeMotor1.getConfigurator().apply(config);
-    indexerMotor1.getConfigurator().apply(config);
-    //Good place to add code for getting information or setting from an existing config instead of creating a new one
-  }
 
-    public void setPower(double power){
-      m_shoontakeMotor1.set(power);
-      m_indexerMotor1.set(power);
-      power = 0.7; 
+    //Good place to add code for getting information or setting from an existing config instead of creating a new one
+  
+
+   public void setShoontake(double power) {
+        shoontakePower = power;
+        shoontakeMotor.setControl(new DutyCycleOut(power));
     }
 
+     public void setIndexer(double power) {
+        indexerPower = power;
+        indexerMotor.setControl(new DutyCycleOut(power));
+    }
+     public double getShoontakePower() {
+        return shoontakePower;
+    }
+
+     public double getIndexerPower() {
+        return indexerPower;
+    }
+
+     public double getShoontakeRPM() {
+        return shoontakeMotor.getVelocity().getValueAsDouble();
+    }
+
+    public double getIndexerRPM() {
+        return indexerMotor.getVelocity().getValueAsDouble();
+    }
+
+    // CANCoder angle (if you want it)
+    public double getShoontakeAngleDegrees() {
+        return shoontakeEncoder.getPosition().getValueAsDouble();
+    }
+
+    // Clear to default “idle” state
+    public void clearState() {
+        setShoontake(-0.30);
+        setIndexer(0.40);
+    }
+  
+
+     
+   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 }
+
