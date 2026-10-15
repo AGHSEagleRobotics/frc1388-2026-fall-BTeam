@@ -20,19 +20,21 @@ import com.ctre.phoenix6.hardware.TalonFX;
 public class Shoontake extends SubsystemBase {
   /** Creates a new Shoontake. */
 
-    private static final int SHOONTAKE_MOTOR_ID = 10;
-    private static final int INDEXER_MOTOR_ID   = 11;
-    private static final int SHOONTAKE_CANCODER_ID = 12;
+    private static final int SHOONTAKE_MOTOR_ID = 15;
+    private static final int INDEXER_MOTOR_ID   = 14;
+    // private static final int SHOONTAKE_CANCODER_ID = 12;
     private final TalonFX shoontakeMotor;
     private final TalonFX indexerMotor;
-    private final CANcoder shoontakeEncoder;
-    private double shoontakePower = -0.30; // The following are the default power values on the shoontake and indexer motors
-    private double indexerPower   = 0.40;  // :P
+    // private final CANcoder shoontakeEncoder;
+    // ShoontakePower was originally -0.30
+    // IndexerPower was originally 0.40
+    private double shoontakePower = -0.15; // The following are the default power values on the shoontake and indexer motors
+    private double indexerPower   = 0.20;  // :P
   
   public Shoontake() {
         shoontakeMotor = new TalonFX(SHOONTAKE_MOTOR_ID);
         indexerMotor   = new TalonFX(INDEXER_MOTOR_ID);
-        shoontakeEncoder = new CANcoder(SHOONTAKE_CANCODER_ID);
+        // shoontakeEncoder = new CANcoder(SHOONTAKE_CANCODER_ID);
 
         shoontakeMotor.setControl(new DutyCycleOut(shoontakePower));
         indexerMotor.setControl(new DutyCycleOut(indexerPower));
@@ -69,14 +71,14 @@ public class Shoontake extends SubsystemBase {
     }
 
     // CANCoder angle (if you want it)
-    public double getShoontakeAngleDegrees() {
-        return shoontakeEncoder.getPosition().getValueAsDouble();
-    }
+    // public double getShoontakeAngleDegrees() {
+    //     return shoontakeEncoder.getPosition().getValueAsDouble();
+    // }
 
-    // Clear to default “idle” state
+    // Clear to default "idle" state
     public void clearState() {
-        setShoontake(-0.30);
-        setIndexer(0.40);
+        setShoontake(-0.15); // Old value -0.30
+        setIndexer(0.20); // Old value 0.40
     }
   
 
