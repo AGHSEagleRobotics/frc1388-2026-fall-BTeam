@@ -30,31 +30,32 @@ public class ShoontakeCommand extends Command {
   @Override
   public void initialize() {
     shoontake.clearState();
-
+// need to change values for short to be able to layup (45 shoontake?)
+// 
         switch (mode) {
             case LONG:
-                shoontake.setShoontake(-0.50);
-                shoontake.setIndexer(0.50);
+                shoontake.setShoontake(0.50);
+                shoontake.setIndexer(-0.80);
                 break;
 
             case MEDIUM:
-                shoontake.setShoontake(-0.45);
-                shoontake.setIndexer(0.45);
+                shoontake.setShoontake(0.45);
+                shoontake.setIndexer(-0.75);
                 break;
 
             case SHORT:
-                shoontake.setShoontake(-0.40);
-                shoontake.setIndexer(0.40);
+                shoontake.setShoontake(0.40);
+                shoontake.setIndexer(-0.60);
                 break;
 
             case INTAKE:
-                shoontake.setShoontake(-0.35);
-                shoontake.setIndexer(-0.95);
+                shoontake.setShoontake(0.35);
+                shoontake.setIndexer(0.95);
                 break;
 
             case VOMIT:
                 shoontake.setShoontake(-0.20);
-                shoontake.setIndexer(0.95);
+                shoontake.setIndexer(-0.75);
                 break;  
 
             case STOP:

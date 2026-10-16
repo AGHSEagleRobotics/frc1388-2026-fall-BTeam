@@ -20,8 +20,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 public class Shoontake extends SubsystemBase {
   /** Creates a new Shoontake. */
 
-    private static final int SHOONTAKE_MOTOR_ID = 15;
-    private static final int INDEXER_MOTOR_ID   = 14;
+    private static final int SHOONTAKE_MOTOR_ID = 14;
+    private static final int INDEXER_MOTOR_ID   = 15;
     // private static final int SHOONTAKE_CANCODER_ID = 12;
     private final TalonFX shoontakeMotor;
     private final TalonFX indexerMotor;
