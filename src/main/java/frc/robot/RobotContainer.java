@@ -61,7 +61,10 @@ public class RobotContainer {
     public RobotContainer(){
         configureBindings();
         drivetrain.setDefaultCommand(
-            drivetrain.applyRequest(() -> drive.withVelocityX(joystick.getLeftX()).withVelocityY(-joystick.getLeftY()).withRotationalRate(joystick.getRightX()))
+            drivetrain.applyRequest(
+                () -> drive.withVelocityX(joystick.getLeftX()).withVelocityY(-joystick.getLeftY()).withRotationalRate(3/4.*2*3.14*joystick.getRightX()))
+                // 3/4*2*3.14*joystick.getright is a temporary addition to convert the controller data to radians for the withRotationalRate method.
+                // Thank you Perin for the guidence on this part ^^^
         );
     }
 

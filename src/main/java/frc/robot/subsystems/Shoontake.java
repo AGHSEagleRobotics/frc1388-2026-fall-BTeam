@@ -28,7 +28,7 @@ public class Shoontake extends SubsystemBase {
     // private final CANcoder shoontakeEncoder;
     // ShoontakePower was originally -0.30
     // IndexerPower was originally 0.40
-    private double shoontakePower = -0.15; // The following are the default power values on the shoontake and indexer motors
+    private double shoontakePower = 0.15; // The following are the default power values on the shoontake and indexer motors
     private double indexerPower   = 0.20;  // :P
   
   public Shoontake() {
@@ -47,7 +47,7 @@ public class Shoontake extends SubsystemBase {
 
    public void setShoontake(double power) {
         shoontakePower = power;
-        shoontakeMotor.setControl(new DutyCycleOut(power));
+        shoontakeMotor.setControl(new DutyCycleOut(power)); //Duty cycle really? Velocity control with KV and small KP will do great. Just set target rpm for shooter, convert to motor rpm via gear ratio, and do simple kv tuning aka rotation speed per volt. -Perrin
     }
 
      public void setIndexer(double power) {
@@ -77,7 +77,7 @@ public class Shoontake extends SubsystemBase {
 
     // Clear to default "idle" state
     public void clearState() {
-        setShoontake(-0.15); // Old value -0.30
+        setShoontake(0.15); // Old value -0.30
         setIndexer(0.20); // Old value 0.40
     }
   
