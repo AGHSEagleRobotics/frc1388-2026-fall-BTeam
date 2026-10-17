@@ -75,8 +75,8 @@ public class Shoontake extends SubsystemBase {
 
     // Clear to default “idle” state
     public void clearState() {
-        setShoontake(-0.30);
-        setIndexer(0.40);
+        setShoontake(0.15);
+        setIndexer(0.20);
     }
   
 

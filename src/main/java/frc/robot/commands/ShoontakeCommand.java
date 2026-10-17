@@ -33,33 +33,33 @@ public class ShoontakeCommand extends Command {
 
         switch (mode) {
             case LONG:
-                shoontake.setShoontake(1.00);
-                shoontake.setIndexer(-1.00);
+                shoontake.setShoontake(0.5*1.5);
+                shoontake.setIndexer(-0.80);
                 break;
 
             case MEDIUM:
-                shoontake.setShoontake(0.95);
-                shoontake.setIndexer(-0.95);
+                shoontake.setShoontake(0.45*1.5);
+                shoontake.setIndexer(-0.75);
                 break;
 
             case SHORT:
-                shoontake.setShoontake(0.90);
-                shoontake.setIndexer(-0.90);
+                shoontake.setShoontake(0.4*1.5);
+                shoontake.setIndexer(-0.6);
                 break;
 
             case INTAKE:
-                shoontake.setShoontake(-0.75);
-                shoontake.setIndexer(0.85);
+                shoontake.setShoontake(0.35*1.8);
+                shoontake.setIndexer(0.4*1.13);
                 break;
 
             case VOMIT:
-                shoontake.setShoontake(0.85);
-                shoontake.setIndexer(0.75);
+                shoontake.setShoontake(0.4*1.13);
+                shoontake.setIndexer(0.4);
                 break;
 
             case STOP:
-                shoontake.setShoontake(-0.30);
-                shoontake.setIndexer(0.40);
+                shoontake.setShoontake(0);
+                shoontake.setIndexer(0);
                 break;
         }
   }
