@@ -30,7 +30,7 @@ public class ShoontakeCommand extends Command {
   @Override
   public void initialize() {
     shoontake.clearState();
-// values changed
+// values changed (Long was originally 50)
 
 // 
 
