@@ -40,6 +40,19 @@ public class Shoontake extends SubsystemBase {
         indexerMotor.setControl(new DutyCycleOut(indexerPower));
     
 }
+
+private frc.robot.commands.ShoontakeCommand.Mode currentMode =
+    frc.robot.commands.ShoontakeCommand.Mode.STOP;
+
+// Add a setter the command can call:
+public void setMode(frc.robot.commands.ShoontakeCommand.Mode mode) {
+    currentMode = mode;
+}
+
+// Add a getter for the dashboard:
+public frc.robot.commands.ShoontakeCommand.Mode getMode() {
+    return currentMode;
+}
     // TalonFXConfigurator configurator = new TalonFXConfigurator(1);
 
     //Good place to add code for getting information or setting from an existing config instead of creating a new one

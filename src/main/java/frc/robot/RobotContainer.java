@@ -13,23 +13,24 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+// import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shoontake;
 import frc.robot.commands.ShoontakeCommand;
 import frc.robot.commands.ShoontakeCommand.Mode;
+import frc.robot.subsystems.Dashboard;
 
-import static frc.robot.Constants.OperatorConstants.*;
-import static frc.robot.Constants.FuelConstants.*;
+// import static frc.robot.Constants.OperatorConstants.*;
+// import static frc.robot.Constants.FuelConstants.*;
 // import frc.robot.commands.Autos;
 // import frc.robot.subsystems.CANFuelSubsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import static frc.robot.Constants.FuelConstants.SPIN_UP_SECONDS;
+// import static frc.robot.Constants.FuelConstants.SPIN_UP_SECONDS;
 
 public class RobotContainer {
 
@@ -37,7 +38,10 @@ public class RobotContainer {
   // The robot's subsystems
   // private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
    private final Shoontake shoontake = new Shoontake();
+   
       private Mode lastState = null;
+
+    //   public final Dashboard dashboard;
   
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -46,6 +50,9 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    private final Dashboard dashboard =
+    new Dashboard(shoontake, drivetrain);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed*.1).withRotationalDeadband(MaxAngularRate*.1)
@@ -62,10 +69,16 @@ public class RobotContainer {
         configureBindings();
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(
-                () -> drive.withVelocityX(joystick.getLeftX()).withVelocityY(-joystick.getLeftY()).withRotationalRate(3/4.*2*3.14*joystick.getRightX()))
+                () -> drive.withVelocityX(joystick.getLeftX()*MaxSpeed*0.8).withVelocityY(-joystick.getLeftY()*MaxSpeed*0.8).withRotationalRate(3/4.*2*3.14*joystick.getRightX()))
                 // 3/4*2*3.14*joystick.getright is a temporary addition to convert the controller data to radians for the withRotationalRate method.
                 // Thank you Perin for the guidence on this part ^^^
         );
+        joystick.a().onTrue(
+            Commands.runOnce(() -> drivetrain.zeroGyro())
+        );
+        
+          dashboard.setDefaultAuto("LayupLeft", getAutonomousCommand());
+       
     }
 
 
@@ -81,6 +94,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
         joystick.rightBumper()
             .onTrue(Commands.runOnce(() -> {
                 if (lastState == null || lastState == Mode.LONG) {
@@ -147,22 +161,26 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    public Command getAutonomousCommand() {
-        // Simple drive forward auton
-        final var idle = new SwerveRequest.Idle();
-        return Commands.sequence(
-            // Reset our field centric heading to match the robot
-            // facing away from our alliance station wall (0 deg).
-            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-            // Then slowly drive forward (away from us) for 5 seconds.
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
-            )
-            .withTimeout(5.0),
-            // Finally idle for the rest of auton
-            drivetrain.applyRequest(() -> idle)
-        );
+   public Command getAutonomousCommand() {
+    Command selected = dashboard.getSelectedAuto();
+    if (selected != null) {
+        return selected;
     }
+    // Fallback: your simple forward auton
+    final var idle = new SwerveRequest.Idle();
+    return Commands.sequence(
+        drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
+        drivetrain.applyRequest(() ->
+            drive.withVelocityX(0.5)
+                 .withVelocityY(0)
+                 .withRotationalRate(0)
+        ).withTimeout(5.0),
+        drivetrain.applyRequest(() -> idle)
+    );
+}
+
+    public void periodic() {
+    dashboard.update();
+}
+
 }

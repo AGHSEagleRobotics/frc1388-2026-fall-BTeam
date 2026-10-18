@@ -65,6 +65,8 @@ public class ShoontakeCommand extends Command {
                 shoontake.setIndexer(0.);
                 break;
         }
+
+        shoontake.setMode(mode);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
