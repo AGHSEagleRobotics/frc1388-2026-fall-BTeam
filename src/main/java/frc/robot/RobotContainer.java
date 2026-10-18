@@ -69,7 +69,7 @@ public class RobotContainer {
         configureBindings();
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(
-                () -> drive.withVelocityX(joystick.getLeftX()*MaxSpeed*0.8).withVelocityY(-joystick.getLeftY()*MaxSpeed*0.8).withRotationalRate(3/4.*2*3.14*joystick.getRightX()))
+                () -> drive.withVelocityX(joystick.getLeftX()*MaxSpeed*0.8).withVelocityY(-joystick.getLeftY()*MaxSpeed*0.8).withRotationalRate(3/4.*2*3.14*-joystick.getRightX()))
                 // 3/4*2*3.14*joystick.getright is a temporary addition to convert the controller data to radians for the withRotationalRate method.
                 // Thank you Perin for the guidence on this part ^^^
         );
@@ -85,6 +85,8 @@ public class RobotContainer {
           dashboard.setDefaultAuto("DepotRight", getAutonomousCommand());
           dashboard.setDefaultAuto("SitStillLookPrettyLeft", getAutonomousCommand());
           dashboard.setDefaultAuto("SitStillLookPrettyRight", getAutonomousCommand());
+          dashboard.setDefaultAuto("CenterLeft", getAutonomousCommand());
+          dashboard.setDefaultAuto("CenterRight", getAutonomousCommand());
        
     }
 

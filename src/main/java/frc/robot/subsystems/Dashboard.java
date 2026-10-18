@@ -3,9 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.Shoontake;
@@ -26,6 +29,8 @@ public class Dashboard {
     private final GenericEntry matchPhaseEntry;
     private final GenericEntry robotStateEntry;
     private final GenericEntry shootCueEntry;
+     private final GenericEntry isHubActive;
+    private final GenericEntry hubEnabledTimer;
 
     // Auto chooser
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -48,6 +53,18 @@ public class Dashboard {
 
         autoTab.add("Auto Selector", autoChooser)
             .withPosition(0, 0).withSize(3, 2);
+
+              hubEnabledTimer = autoTab
+          .add("ShiftCountdown", "Default")
+          .withWidget(BuiltInWidgets.kTextView)
+          .withPosition(0, 0)
+          .getEntry();
+
+           isHubActive = autoTab
+          .add("Hub Enabled?", false)
+          .withWidget(BuiltInWidgets.kBooleanBox)
+          .withPosition(4, 0)
+          .getEntry();
 
         NetworkTableInstance.getDefault()
             .getTable("Robot")
@@ -135,4 +152,10 @@ public class Dashboard {
             shootCueEntry.setString("HOLD");
         }
     }
+
+//      public void periodic() {
+// hubEnabledTimer.setString(String.valueOf(timeLeftToShoot()));
+// isHubActive.setBoolean(isHubActive());
+// SmartDashboard.putNumber("Match Timer", DriverStation.getMatchTime());
+// }
 }
