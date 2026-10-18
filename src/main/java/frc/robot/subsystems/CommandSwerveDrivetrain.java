@@ -54,6 +54,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         // this.setOperatorPerspectiveForward(Rotation2d.kZero);
     }
 
+    public void rotateGyroBy90(){
+        Rotation2d current = this.getOperatorForwardDirection();
+        Rotation2d rotated = current.plus(Rotation2d.fromDegrees(90));
+        this.setOperatorPerspectiveForward(rotated);
+    
+    }
+
     public edu.wpi.first.math.kinematics.ChassisSpeeds getChassisSpeeds() {
     // Phoenix 6 swerve exposes state; if your version differs, adjust accordingly
     return this.getState().Speeds;

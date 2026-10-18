@@ -76,6 +76,10 @@ public class RobotContainer {
         joystick.a().onTrue(
             Commands.runOnce(() -> drivetrain.zeroGyro())
         );
+
+        joystick.b().onTrue(
+            Commands.runOnce(() -> drivetrain.rotateGyroBy90())
+        );
         
           dashboard.setDefaultAuto("LayupLeft", getAutonomousCommand());
           dashboard.setDefaultAuto("LayupRight", getAutonomousCommand());
