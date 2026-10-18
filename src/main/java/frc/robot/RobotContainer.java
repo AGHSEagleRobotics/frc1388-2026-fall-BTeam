@@ -78,6 +78,13 @@ public class RobotContainer {
         );
         
           dashboard.setDefaultAuto("LayupLeft", getAutonomousCommand());
+          dashboard.setDefaultAuto("LayupRight", getAutonomousCommand());
+          dashboard.setDefaultAuto("TaxiLeft", getAutonomousCommand());
+          dashboard.setDefaultAuto("TaxiRight", getAutonomousCommand());
+          dashboard.setDefaultAuto("DepotLeft", getAutonomousCommand());
+          dashboard.setDefaultAuto("DepotRight", getAutonomousCommand());
+          dashboard.setDefaultAuto("SitStillLookPrettyLeft", getAutonomousCommand());
+          dashboard.setDefaultAuto("SitStillLookPrettyRight", getAutonomousCommand());
        
     }
 
