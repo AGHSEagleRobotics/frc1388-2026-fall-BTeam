@@ -37,17 +37,17 @@ public class ShoontakeCommand extends Command {
         switch (mode) {
             case LONG:
                 shoontake.setShoontake(0.75);
-                shoontake.setIndexer(-0.80);
+                shoontake.setIndexer(-0.85);
                 break;
 
             case MEDIUM:
                 shoontake.setShoontake(0.65);
-                shoontake.setIndexer(-0.75);
+                shoontake.setIndexer(-0.85);
                 break;
 
             case SHORT:
                 shoontake.setShoontake(0.50);
-                shoontake.setIndexer(-0.60);
+                shoontake.setIndexer(-0.85);
                 break;
 
             case INTAKE:
