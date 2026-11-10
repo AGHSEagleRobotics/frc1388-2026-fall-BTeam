@@ -33,7 +33,7 @@ public class ShoontakeCommand extends Command {
 // values changed (Long was originally 50)
 
 // 
-
+// Changeable values :)
         switch (mode) {
             case LONG:
                 shoontake.setShoontake(0.75);
